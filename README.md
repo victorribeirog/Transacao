@@ -1,32 +1,81 @@
-# API Transação
 
-## Visão Geral
-Este repositório contém a implementação de uma API REST para processar transações e calcular estatísticas em tempo real.
+# Transação API
 
----
+Este projeto é uma API REST para gerenciar transações e calcular estatísticas das transações realizadas nos últimos 60 segundos. A API foi desenvolvida com Java e Spring Boot.
 
-## Tecnologias Utilizadas
-- **Java 21**
-- **Spring Boot**
-- **Sl4j**
-- **Swagger**
 
----
 
-## Funcionalidades
-- **Receber Transações:** Endpoint para registrar transações enviadas pelo cliente.
-- **Limpar Transações:** Endpoint para remover todas as transações armazenadas em memória.
-- **Calcular Estatísticas:** Endpoint que retorna estatísticas das transações ocorridas nos últimos 60 segundos.
 
----
+## Variáveis de Ambiente
 
-## Endpoints
-1. **Realizar Transação**
-![Transação](assets/img.png)
-2. **Deletar Transações**
-3. **Gerar estatísticas das Transações nos últimos 60 segundos**
-![Estatísticas](assets/img_1.png)
+Para rodar esta aplicação, você precisa de:
 
----
+Java: JDK 21 ou superior.
+Maven: Versão 3.8.1 ou superior.
+Git: Para clonar o repositório.
+Docker (opcional): Caso queira rodar a aplicação em um container.
 
-Desenvolvido por [Victor Ribeiro](https://github.com/victorribeirog).
+
+
+
+##  Como Configurar o Projeto
+
+1. Clone o Repositório
+
+2. Compile o Projeto
+
+```bash
+ mvn clean install
+```
+
+3. Execute o Projeto
+
+```bash
+mvn spring-boot:run
+```
+4. Como Rodar em um Container (Opcional)
+
+4.1. Crie a Imagem Docker
+Certifique-se de que o Docker está instalado e execute:
+
+```bash
+docker build -t api-transacoes 
+```
+
+4.2. Execute o Container
+
+```bash
+docker run -p 8080:8080 api-transacoes
+```
+
+## Documentação da API
+
+#### Receber Transações
+
+```http
+  POST /transacao
+```
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `valor` | `BigDecimal` | **Obrigatório**. O valor da transação 
+| `dataHora` | `OffsetDateTime` | **Obrigatório**. O horário que a transação ocorreu
+
+#### Limpar Transações
+
+```http
+  DELETE /transacao
+```
+
+#### Calcular Estatísticas
+
+```http
+  GET /estatistica
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `intervaloSegundos` | `integer` | **Não Obrigatório** O padrão default é 60s  |
+
+
+
