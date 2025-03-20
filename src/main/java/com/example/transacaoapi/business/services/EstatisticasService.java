@@ -3,6 +3,7 @@ package com.example.transacaoapi.business.services;
 import com.example.transacaoapi.controller.dtos.EstatisticasResponseDTO;
 import com.example.transacaoapi.controller.dtos.TransacaoRequestDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class EstatisticasService {
 
         log.info("Iniciada busca de estatísticas de transações pelo período de tempo " + intervaloBusca);
 
+        long startTime = System.currentTimeMillis();
+
         List<TransacaoRequestDTO> transacoes = transacaoService.buscarTransacoes(intervaloBusca);
 
         if(transacoes.isEmpty()){
@@ -29,6 +32,10 @@ public class EstatisticasService {
 
         DoubleSummaryStatistics estatisticasTransacoes = transacoes.stream()
                 .mapToDouble(TransacaoRequestDTO::valor).summaryStatistics();
+
+        long finish = System.currentTimeMillis();
+
+        System.out.println("Tempo de requisição: " + (finish - startTime) + " ms");
 
         log.info("Estatisticas retornadas com sucesso");
         return new EstatisticasResponseDTO(estatisticasTransacoes.getCount(),
